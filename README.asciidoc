@@ -1,0 +1,79 @@
+= ESPEASY et Domogik
+:toc:
+
+== Description
+
+ESPeasy (http://www.esp8266.nu), firmware polyvalent pour les ESP8266
+
+ESPeasy est un firmware pour les différents types d’ESP8266.
+
+Une fois chargé, vous disposez d’une page web d’administration qui permet de configurer les capteurs/actionneurs de l’ESP 
+en live et aussi son interaction avec un logiciel de domotique
+
+Le firmware ESP Easy est actuellement à la version R78 (mai 2016).
+
+Il est possible de piloter differents capteurs gérer par le firmware en utlisant uniquement l'interface web de l'ESP.
+
+Liste non exaustive de capteurs/senseurs supportéshttp://www.esp8266.nu/index.php/Main_Page#Applications:
+
+
+
+* DHT22
+* BMP180
+* PCF8574 / MCP23017
+* PCF8591
+* Dallas DS18b20 
+* HC-SR04
+* Switch / Relais
+* GPIO
+* LCD
+* ...
+
+
+link:http://youtu.be/dYYdhkq7LNA[Horloge-Afficheur a matrice de led]
+
+
+=== Utiliser ces esp sous Domogik
+
+==== Configuration pour le plugin MQTT
+
+image:images/HorlogeAfficheurMatriceLed_ph3.jpg[caption="", title="", alt="", width="500", link="images/HorlogeAfficheurMatriceLed_ph3.jpg"]
+
+
+---------------------------------------------------------------------------------------------------
+Test avec le DHT22:
+2016-05-09 00:22:23,592  0  /esp01-2/dht22/Temperature  23.10
+2016-05-09 00:22:23,633  0  /esp01-2/dht22/Humidity  42.70
+---------------------------------------------------------------------------------------------------
+
+
+==== Configuration pour le plugin VDevice
+
+
+---------------------------------------------------------------------------------------------------
+Avec une input du MCP23017 reliée à un bouton:
+2016-05-11 01:50:45,035 domogik-xplgw INFO Storing stat for device 'VBinary 1' (59) and sensor 'Virtual Binary' (143) with value '0.00' after conversion.
+2016-05-11 01:50:48,471 domogik-xplgw INFO Storing stat for device 'VBinary 1' (59) and sensor 'Virtual Binary' (143) with value '1.00' after conversion.
+
+2016-05-11 17:05:21,909 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'VBinary 1'
+2016-05-11 17:05:23,458 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'VBinary 1'
+2016-05-11 17:05:34,715 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'VBinary 1'
+2016-05-11 17:05:37,745 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'VBinary 1'
+---------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+Commande led sur port GPA7:
+$ wget -qO- "http://esp01-1/control?cmd=mcpgpio,8,0" ; echo
+MCPGPIO 8 Set to 0
+
+$ wget -qO- "http://esp01-1/control?cmd=mcpgpio,8,1" ; echo
+MCPGPIO 8 Set to 1
+
+---------------------------------------------------------------------------------------------------
+
+
+{nbsp}
+
+'''
+~13/5/2016~
