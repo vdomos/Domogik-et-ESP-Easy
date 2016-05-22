@@ -198,6 +198,8 @@ image::images/esp8266-01_gui_6.png[caption="", title="", alt="", width="800", li
 Exemple avec un circuit d'entrées/sorties **I2C** link:http://www.microchip.com/wwwproducts/en/MCP23017[MCP23017]:
 
 
+{nbsp}
+
 ===== Dans la page "**Hardware**",
 
 image::images/esp8266-01_gui_8.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_8.png"]
@@ -207,6 +209,8 @@ Renseigner:
 * Le GPIO utlisé pour SDA
 * Le GPIO utlisé pour SCL
 
+
+{nbsp}
 
 ===== Dans la page "**Devices**"
 
