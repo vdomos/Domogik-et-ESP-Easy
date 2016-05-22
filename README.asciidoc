@@ -1,22 +1,34 @@
 = ESPEASY et Domogik
 :toc:
 
+{nbsp}
+
 == Description
 
-ESPeasy (http://www.esp8266.nu), firmware polyvalent pour les ESP8266
 
-ESPeasy est un firmware pour les différents types d’ESP8266.
+L'ESP8266 est un petit module Wifi très bon marché disponible sur différentes cartes/modules fourni avec différents firmware permettant de le programmer 
+avec des commandes AT, en Lua, python, avec l'IDE Arduino, ESPEasy ...
+
+Le premier modèle le esp-01:
+
+image::images/esp8266-pinout.png[caption="", title="", alt="", width="200", link="images/esp8266-pinout.png"]
+
+{nbsp}
+
+== ESP Easy
+
+{nbsp}
+
+=== Le firmware
+
+ESPeasy (http://www.esp8266.nu), firmware polyvalent pour les différents types d’ESP8266.
 
 Une fois chargé, vous disposez d’une page web d’administration qui permet de configurer les capteurs/actionneurs de l’ESP 
-en live et aussi son interaction avec un logiciel de domotique
+et aussi son interaction avec un logiciel de domotique.
 
-Le firmware ESP Easy est actuellement à la version R78 (mai 2016).
+Le firmware ESP Easy est actuellement à la version **R78** (mai 2016). Il est possible de piloter differents capteurs gérer par le firmware en utlisant uniquement l'interface web de l'ESP.
 
-Il est possible de piloter differents capteurs gérer par le firmware en utlisant uniquement l'interface web de l'ESP.
-
-Liste non exaustive de capteurs/senseurs supportéshttp://www.esp8266.nu/index.php/Main_Page#Applications:
-
-
+Liste non exaustive de capteurs/senseurs supportés (http://www.esp8266.nu/index.php/Main_Page#Applications:
 
 * DHT22
 * BMP180
@@ -30,50 +42,211 @@ Liste non exaustive de capteurs/senseurs supportéshttp://www.esp8266.nu/index.p
 * ...
 
 
-link:http://youtu.be/dYYdhkq7LNA[Horloge-Afficheur a matrice de led]
+{nbsp}
 
+=== Programmation d'un esp8266-01 sous espeasy
 
-=== Utiliser ces esp sous Domogik
+==== Shéma de cablage d'un esp8266-01 pour programmation
+image::images/esp8266-01_dht22.png[caption="", title="", alt="", width="800", link="images/esp8266-01_dht22.png"]
 
-==== Configuration pour le plugin MQTT
+Un senseur **DHT22** est relié à l'esp01 pour le premier test.
 
-image:images/HorlogeAfficheurMatriceLed_ph3.jpg[caption="", title="", alt="", width="500", link="images/HorlogeAfficheurMatriceLed_ph3.jpg"]
+{nbsp}
 
+====  Flashage du module esp01
+
+* Installation de l'outils de "flashage"
 
 ---------------------------------------------------------------------------------------------------
-Test avec le DHT22:
+# pip install esptool  (voir doc sur https://github.com/themadinventor/esptool)
+---------------------------------------------------------------------------------------------------
+
+* Appuie sur bouton **RESET** puis **FLASH** (Aprés cablage des boutons RESET et FLASH sur le module)
+* Relacher **RESET** et rester sur **FLASH** pendant la programmation
+
+---------------------------------------------------------------------------------------------------
+$ esptool.py --port /dev/ttyUSB0 write_flash 0x00000 ESPEasy_R78_512.bin
+esptool.py v1.0.1
+Connecting...
+Erasing flash...
+Took 1.83s to erase flash block
+Wrote 376832 bytes at 0x00000000 in 36.2 seconds (83.4 kbit/s)...
+---------------------------------------------------------------------------------------------------
+
+* Se connecter sur l'AP Wifi **ESP_0** du module, password '**configesp**', ouvrir le naviguateur et suivre les menus de configuration (link:http://www.esp8266.nu/index.php/EasySetup[EasySetup])
+* Se rendre sur la page Web du module pour le configurer link:http://www.esp8266.nu/index.php/ESPEasy#ESP_Easy_web_interface[ESP_Easy_web_interface]
+
+* Suivre l'état du module en écoutant sur son port série
+
+---------------------------------------------------------------------------------------------------
+$ picocom --omap lfcrlf -b 115200 -d 8 -f n -p n /dev/ttyUSB0           
+picocom v1.7
+...
+INIT : Booting Build nr:78
+WIFI : No SSID!
+INIT : I2C
+INIT : Boot OK
+INIT : Reboot from deepsleep
+WD   : Uptime 0 ConnectFailures 0 FreeMem 25032
+WD   : Uptime 1 ConnectFailures 0 FreeMem 25000
+---------------------------------------------------------------------------------------------------
+
+
+==== Page principale du module
+
+image::images/esp8266-01_gui_1.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_1.png"]
+
+
+{nbsp}
+
+== Utiliser ces ESP sous Domogik
+
+link:http://www.domogik.org/fr/[Domogik] est une solution de Domotique libre (GPLv3). 
+
+Deux possiblités pour utiliser les modules espeasy sous Domogik.
+
+* En utlisant le plugin **MQTT** (necessite d'avoir un broquer MQTT comme Mosquitto d'installé sur le réseau)
+* En utilisant le plugin **vdevice**, le module esp va directement mettre à jour les senseurs dans Domogik.
+
+
+
+
+{nbsp}
+
+=== Avec le plugin MQTT
+
+link:https://github.com/vdomos/domogik-plugin-mqtt[domogik-plugin-mqtt]
+
+{nbsp}
+
+==== Configuration sur l'ESP:
+
+Dans la page "**Config**", choisir le protocole "**OpenHAB MQTT**" et renseigner l'adresse IP et port du broquer MQTT.
+
+image::images/esp8266-01_gui_2.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_2.png"]
+
+
+{nbsp}
+
+==== Ajout d'un device sur l'ESP
+
+Exemple avec une sonde de température/Humidité DHT22:
+
+image::images/esp8266-01_gui_3.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_3.png"]
+
+Renseigner:
+
+* Le "**Device**", ici "Temperature & Humidity - DHT"
+* Le "**1st GPIO**" où est connecté le DHT22, 
+* Le nom du device ("**Name**"), ce nom sera visible dans les messages MQTT.
+* Le "**IDX/Var**" doit être mis à une valeur unique quelconque != de '0'
+* Le "**DHT Type**", ici un DHT22 est utlisé
+
+
+Voici comment vont apparaitre les messages MQTT renvoyer par le module esp-01 (Topic /esp01-2/dht22):
+---------------------------------------------------------------------------------------------------
 2016-05-09 00:22:23,592  0  /esp01-2/dht22/Temperature  23.10
 2016-05-09 00:22:23,633  0  /esp01-2/dht22/Humidity  42.70
 ---------------------------------------------------------------------------------------------------
 
 
-==== Configuration pour le plugin VDevice
+Il est possible de changer le topic publié dans la page "Tools/Advanced" en modifiant le "Publish Template:"
+
+image::images/esp8266-01_gui_7.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_7.png"]
+
+
+
+
+
+
+{nbsp}
+
+=== Avec le plugin VDevice
+link:https://github.com/vdomos/domogik-plugin-vdevice[domogik-plugin-vdevice]
+
+
+{nbsp}
+
+==== Configuration sur l'ESP:
+
+Dans la page "**Config**", choisir le protocole "**Generic HTTP**" et renseigner l'adresse IP et le port du serveur Domogik.
+
+image::images/esp8266-01_gui_4.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_4.png"]
+
+Dans la page "**Tools/Advanced*", renseigner
+
+* le "Publish Template:" avec l'URL domogik pour le plugin vdevice de Domogik. Les variables "id" et "value" seront remplies en fonction du "device" déclaré sur l'esp01. 
+* le "Message Delay (ms)" pour limiter la fréquence de mise à jour sur Domogik.
+
+image::images/esp8266-01_gui_6.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_6.png"]
+
+
+
+
+{nbsp}
+
+==== Ajout d'un "device input" **MCP23017** sur l'ESP
+
+Exemple avec un circuit d'entrées/sorties **I2C** link:http://www.microchip.com/wwwproducts/en/MCP23017[MCP23017]:
+
+
+===== Dans la page "**Hardware**",
+
+image::images/esp8266-01_gui_8.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_8.png"]
+
+Renseigner:
+
+* Le GPIO utlisé pour SDA
+* Le GPIO utlisé pour SCL
+
+
+===== Dans la page "**Devices**"
+
+image::images/esp8266-01_gui_5.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_5.png"]
+
+Renseigner pour un device:
+
+* Le "**Device**", ici "Switch MCP23017"  (voir link:http://www.esp8266.nu/index.php/MCP23017[MCP23017])
+* Le nom du device ("**Name**"), non utlisé pour Domogik.
+* Le "**IDX/Var**" doit correspondre à l'ID Domogik de la "Command" du device créé dans le plugin Vdevice.
+* Le "**Port**" correspond à la pin du MCP23017 (1..16) pour le premier MCP.
+
+
+Ci-dessous, le **Device** du plugin Domogik vdevice correspondant à l'input déclarée ci-dessus (ID Domogik = 25 à renseigner dans IDX/Var):
+
+image::images/esp8266-01_vdevice_1.png[caption="", title="", alt="", width="600", link="images/esp8266-01_vdevice_1.png"]
+
+
+{nbsp}
+
+Voici la log du plugin vdevice mis à jour à chaque changement des entrées du MCP23017:
+---------------------------------------------------------------------------------------------------
+2016-05-22 14:35:03,089 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'GPB0'
+2016-05-22 14:35:05,591 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'GPB0'
+2016-05-22 14:52:06,365 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'GPB0'
+2016-05-22 14:52:24,517 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'GPB0'
+---------------------------------------------------------------------------------------------------
+
+
+{nbsp}
+
+==== Commander les sorties du MCP23017
+
+Aucune configuration n'est a faire dans l'interface web du module esp01:
+
+Le firmware fourni d'office une commande HTTP permettant d'agir sur les sorties du MCP23017:
 
 
 ---------------------------------------------------------------------------------------------------
-Avec une input du MCP23017 reliée à un bouton:
-2016-05-11 01:50:45,035 domogik-xplgw INFO Storing stat for device 'VBinary 1' (59) and sensor 'Virtual Binary' (143) with value '0.00' after conversion.
-2016-05-11 01:50:48,471 domogik-xplgw INFO Storing stat for device 'VBinary 1' (59) and sensor 'Virtual Binary' (143) with value '1.00' after conversion.
-
-2016-05-11 17:05:21,909 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'VBinary 1'
-2016-05-11 17:05:23,458 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'VBinary 1'
-2016-05-11 17:05:34,715 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'VBinary 1'
-2016-05-11 17:05:37,745 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'VBinary 1'
----------------------------------------------------------------------------------------------------
-
-
----------------------------------------------------------------------------------------------------
-Commande led sur port GPA7:
 $ wget -qO- "http://esp01-1/control?cmd=mcpgpio,8,0" ; echo
 MCPGPIO 8 Set to 0
 
 $ wget -qO- "http://esp01-1/control?cmd=mcpgpio,8,1" ; echo
 MCPGPIO 8 Set to 1
-
 ---------------------------------------------------------------------------------------------------
 
 
 {nbsp}
 
 '''
-~13/5/2016~
+~22/5/2016~
