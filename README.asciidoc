@@ -81,7 +81,7 @@ Wrote 376832 bytes at 0x00000000 in 36.2 seconds (83.4 kbit/s)...
 ---------------------------------------------------------------------------------------------------
 
 * Se connecter sur l'AP Wifi **ESP_0** du module, password '**configesp**', ouvrir le naviguateur et suivre les menus de configuration (link:http://www.esp8266.nu/index.php/EasySetup[EasySetup])
-* Se rendre sur la page Web du module pour le configurer link:http://www.esp8266.nu/index.php/ESPEasy#ESP_Easy_web_interface[ESP_Easy_web_interface]
+* Se rendre sur la page Web du module pour le configurer (link:http://www.esp8266.nu/index.php/ESPEasy#ESP_Easy_web_interface[ESP_Easy_web_interface])
 
 * Suivre l'état du module en écoutant sur son port série
 
