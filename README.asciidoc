@@ -169,11 +169,19 @@ link:https://github.com/vdomos/domogik-plugin-vdevice[domogik-plugin-vdevice]
 
 ==== Configuration sur l'ESP:
 
-Dans la page "**Config**", choisir le protocole "**Generic HTTP**" et renseigner l'adresse IP et le port du serveur Domogik.
+{nbsp}
+
+===== Dans la page "**Config**"
+
+Choisir le protocole "**Generic HTTP**" et renseigner l'adresse IP et le port du serveur Domogik.
 
 image::images/esp8266-01_gui_4.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_4.png"]
 
-Dans la page "**Tools/Advanced*", renseigner
+{nbsp}
+
+===== Dans la page "**Tools/Advanced*"
+
+Renseigner:
 
 * le "Publish Template:" avec l'URL domogik pour le plugin vdevice de Domogik. Les variables "id" et "value" seront remplies en fonction du "device" déclaré sur l'esp01. 
 * le "Message Delay (ms)" pour limiter la fréquence de mise à jour sur Domogik.
