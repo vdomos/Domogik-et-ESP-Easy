@@ -68,7 +68,7 @@ WARNING: Le circuit **ESP8266** et le module **ESP-01** ne fonctionne uniquement
 # pip install esptool  (voir doc sur https://github.com/themadinventor/esptool)
 ---------------------------------------------------------------------------------------------------
 
-* Appuie sur bouton **RESET** puis **FLASH** (Aprés cablage des boutons RESET et FLASH sur le module)
+* Appuie sur bouton **RESET** puis **FLASH**
 * Relacher **RESET** et rester sur **FLASH** pendant la programmation
 
 ---------------------------------------------------------------------------------------------------
