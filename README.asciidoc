@@ -44,7 +44,7 @@ Liste non exaustive de capteurs/senseurs supportés (http://www.esp8266.nu/index
 
 {nbsp}
 
-=== Programmation d'un ESP-01 sous espeasy
+=== Programmation d'un ESP-01 avec le firmware espeasy
 
 ==== Shéma de cablage d'un esp8266-01 pour programmation
 image::images/esp8266-01_dht22.png[caption="", title="", alt="", width="800", link="images/esp8266-01_dht22.png"]
@@ -53,12 +53,16 @@ Un senseur **DHT22** est relié à l'ESP-01 pour le premier test.
 
 image::images/esp8266-01_dht22_ph.jpg[caption="", title="", alt="", width="600", link="images/esp8266-01_dht22_ph.jpg"]
 
+{nbsp}
+
+WARNING: Le circuit **ESP8266** ne fonctionne uniquement qu'en 3.3V.
 
 {nbsp}
 
-====  Flashage du module ESP-01
+====  Flashage du module ESP-01 [small]#(link:http://www.esp8266.nu/index.php/Tutorial_ESPEasy_Firmware_Upload[Tutorial ESPEasy Firmware Upload])#
+ 
+* Installation de l'outils de "flashage" pour Linux
 
-* Installation de l'outils de "flashage"
 
 ---------------------------------------------------------------------------------------------------
 # pip install esptool  (voir doc sur https://github.com/themadinventor/esptool)
@@ -95,6 +99,8 @@ WD   : Uptime 1 ConnectFailures 0 FreeMem 25000
 ---------------------------------------------------------------------------------------------------
 
 
+{nbsp}
+
 ==== Page principale du module
 
 image::images/esp8266-01_gui_1.png[caption="", title="", alt="", width="400", link="images/esp8266-01_gui_1.png"]
@@ -102,14 +108,14 @@ image::images/esp8266-01_gui_1.png[caption="", title="", alt="", width="400", li
 
 {nbsp}
 
-== Utiliser ces ESP sous Domogik
+== Utiliser l'ESP-01 sous Domogik
 
 link:http://www.domogik.org/fr/[Domogik] est une solution de Domotique libre (GPLv3). 
 
 Deux possiblités pour utiliser les modules espeasy sous Domogik.
 
-* En utlisant le plugin **MQTT** (necessite d'avoir un broquer MQTT comme Mosquitto d'installé sur le réseau)
-* En utilisant le plugin **vdevice**, le module esp va directement mettre à jour les senseurs dans Domogik.
+* En utlisant le link:https://github.com/vdomos/domogik-plugin-mqtt[plugin MQTT] (necessite d'avoir un broquer MQTT comme Mosquitto d'installé sur le réseau)
+* En utilisant le link:https://github.com/vdomos/domogik-plugin-vdevice[plugin Vdevice], le module esp va directement mettre à jour les senseurs dans Domogik.
 
 
 
@@ -117,8 +123,6 @@ Deux possiblités pour utiliser les modules espeasy sous Domogik.
 {nbsp}
 
 === Avec le plugin MQTT
-
-link:https://github.com/vdomos/domogik-plugin-mqtt[domogik-plugin-mqtt]
 
 {nbsp}
 
@@ -165,7 +169,6 @@ image::images/esp8266-01_gui_7.png[caption="", title="", alt="", width="800", li
 {nbsp}
 
 === Avec le plugin VDevice
-link:https://github.com/vdomos/domogik-plugin-vdevice[domogik-plugin-vdevice]
 
 
 {nbsp}
@@ -229,12 +232,13 @@ Renseigner pour un device:
 
 Ci-dessous, le **Device** du plugin Domogik vdevice correspondant à l'input déclarée ci-dessus (ID Domogik = 25 à renseigner dans IDX/Var):
 
-image::images/esp8266-01_vdevice_1.png[caption="", title="", alt="", width="600", link="images/esp8266-01_vdevice_1.png"]
+image::images/esp8266-01_vdevice_1.png[caption="", title="", alt="", width="700", link="images/esp8266-01_vdevice_1.png"]
 
 
 {nbsp}
 
-Voici la log du plugin vdevice mis à jour à chaque changement des entrées du MCP23017:
+Voici la log du plugin vdevice lors de la mise à jour à chaque changement des entrées du MCP23017:
+
 ---------------------------------------------------------------------------------------------------
 2016-05-22 14:35:03,089 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'GPB0'
 2016-05-22 14:35:05,591 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '1.00' for device 'GPB0'
@@ -259,6 +263,12 @@ MCPGPIO 8 Set to 0
 $ wget -qO- "http://esp-01-1/control?cmd=mcpgpio,8,1" ; echo
 MCPGPIO 8 Set to 1
 ---------------------------------------------------------------------------------------------------
+
+{nbsp}
+
+En utlisant le link:https://github.com/vdomos/domogik-plugin-script[plugin Script], il sera possible de piloter les sorties du MCP23017 sous Domogik:
+
+image::images/esp8266-01_script_1.png[caption="", title="", alt="", width="700", link="images/esp8266-01_script_1.png"]
 
 
 {nbsp}
