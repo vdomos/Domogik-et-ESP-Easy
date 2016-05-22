@@ -55,7 +55,7 @@ image::images/esp8266-01_dht22_ph.jpg[caption="", title="", alt="", width="600",
 
 {nbsp}
 
-WARNING: Le circuit **ESP8266** ne fonctionne uniquement qu'en 3.3V.
+WARNING: Le circuit **ESP8266** et le module **ESP-01** ne fonctionne uniquement qu'en 3.3V.
 
 {nbsp}
 
@@ -162,7 +162,13 @@ Il est possible de changer le topic publié dans la page "Tools/Advanced" en mod
 image::images/esp8266-01_gui_7.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_7.png"]
 
 
+{nbsp}
 
+==== Ajout d'un device MQTT dans Domogik
+
+Dans Domogik, il suffira de créer un "device" de type "sensor" avec le Topic correspondant dans le plugin MQTT:
+
+image::images/esp8266-01_mqtt_1.png[caption="", title="", alt="", width="800", link="images/esp8266-01_mqtt_1.png"]
 
 
 
@@ -189,7 +195,7 @@ image::images/esp8266-01_gui_4.png[caption="", title="", alt="", width="400", li
 
 Renseigner:
 
-* le "Publish Template:" avec l'URL domogik pour le plugin vdevice de Domogik. Les variables "id" et "value" seront remplies en fonction du "device" déclaré sur l'ESP-01. 
+* le "Publish Template:" avec l'URL domogik pour le plugin Vdevice de Domogik. Les variables "id" et "value" seront initialisées en fonction du "device" déclaré sur l'ESP-01. 
 * le "Message Delay (ms)" pour limiter la fréquence de mise à jour sur Domogik.
 
 image::images/esp8266-01_gui_6.png[caption="", title="", alt="", width="800", link="images/esp8266-01_gui_6.png"]
@@ -212,8 +218,8 @@ image::images/esp8266-01_gui_8.png[caption="", title="", alt="", width="400", li
 
 Renseigner:
 
-* Le GPIO utlisé pour SDA
-* Le GPIO utlisé pour SCL
+* Le GPIO utlisé pour SDA du bus i2c
+* Le GPIO utlisé pour SCL du bus i2c
 
 
 {nbsp}
@@ -230,14 +236,20 @@ Renseigner pour un device:
 * Le "**Port**" correspond à la pin du MCP23017 (1..16) pour le premier MCP.
 
 
-Ci-dessous, le **Device** du plugin Domogik vdevice correspondant à l'input déclarée ci-dessus (ID Domogik = 25 à renseigner dans IDX/Var):
+{nbsp}
+
+==== Ajout d'un device Vdevice dans Domogik
+
+Dans Domogik, il suffira de créer un "device" correspondant dans le plugin Vdevice.
+
+Ci-dessous, le **VDevice** de type binaire correspondant à l'input déclarée ci-dessus dans l'ESP (ID Command Domogik = 25 à renseigner dans IDX/Var):
 
 image::images/esp8266-01_vdevice_1.png[caption="", title="", alt="", width="700", link="images/esp8266-01_vdevice_1.png"]
 
 
 {nbsp}
 
-Voici la log du plugin vdevice lors de la mise à jour à chaque changement des entrées du MCP23017:
+Voici la log du plugin Vdevice lors de la mise à jour à chaque changement des entrées du MCP23017:
 
 ---------------------------------------------------------------------------------------------------
 2016-05-22 14:35:03,089 domogik-vdevice INFO ==> Update Sensor 'virtual_binary' / id '143' with value '0.00' for device 'GPB0'
