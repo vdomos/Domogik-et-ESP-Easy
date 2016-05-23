@@ -150,7 +150,7 @@ Renseigner:
 * Le "**DHT Type**", ici un DHT22 est utlisé
 
 
-Voici comment vont apparaitre les messages MQTT renvoyer par le module esp-01 (Topic /esp-01-2/dht22):
+Voici comment vont apparaitre les messages MQTT renvoyés par le module esp-01 (Topic /esp-01-2/dht22):
 ---------------------------------------------------------------------------------------------------
 2016-05-09 00:22:23,592  0  /esp-01-2/dht22/Temperature  23.10
 2016-05-09 00:22:23,633  0  /esp-01-2/dht22/Humidity  42.70
